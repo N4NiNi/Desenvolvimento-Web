@@ -13,10 +13,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import model.Pedido;
+import model.LanchePedido;
 
 public class CriaDao {
     public int Criapedido(Pedido pedido) throws ClassNotFoundException{
-        String INSERT_PEDIDOS_SQL = "INSERT INTO pedido" + " (Valor_Total, Cliente_CPF) VALUES " + " (?, ?);";
+        String INSERT_PEDIDOS_SQL = "INSERT INTO pedido" + " (Valor_Total, Cliente_CPF, status, endereco) VALUES " + " (?, ?, 0, ?);";
         int result = 0;
         try{
             Class.forName("com.mysql.jdbc.Driver");
@@ -28,6 +29,8 @@ public class CriaDao {
             PreparedStatement preparedStatement = conn.prepareStatement(INSERT_PEDIDOS_SQL);
             preparedStatement.setFloat(1, pedido.getValor_Total());
             preparedStatement.setString(2, pedido.getCpfcliente());
+            preparedStatement.setString(4, pedido.getEndereco());
+            
             
             result = preparedStatement.executeUpdate();
             
@@ -36,6 +39,8 @@ public class CriaDao {
         }
         return result;
     }
+    
+    
     
     private void printSQLException(SQLException ex){
         for(Throwable e: ex){

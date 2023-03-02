@@ -13,6 +13,7 @@ import jakarta.servlet.RequestDispatcher;
 
 import model.Pedido;
 import model.Lanche;
+import model.LanchePedido;
 //
 import database.VisualizaDao;
 import database.CriaDao;
@@ -46,16 +47,19 @@ public class ServletMultiplo extends HttpServlet {
     }
     
     private void registrar (HttpServletRequest request, HttpServletResponse response){
-        String nomeLanche = request.getParameter("nomelanche");
-        String cpfCliente = request.getParameter("cpfcliente");
+        String nomeLanche = request.getParameter("lanches[]");
+        System.out.println("flamengo");
+        System.out.println(nomeLanche);
+        String cpfCliente = request.getParameter("cpf");
         float precoTotal = Float.parseFloat(request.getParameter("precototal"));
-        
+        String endereco = request.getParameter("endereco");
         Pedido ped = new Pedido();
         Lanche lanche = new Lanche(); 
         
         ped.setCpfcliente(cpfCliente);
         ped.setValor_Total(precoTotal);
-        lanche.setNomelanche(nomeLanche);
+        ped.setEndereco(endereco);
+        //lanche.setNomelanche(nomeLanche);
        
         
         try{

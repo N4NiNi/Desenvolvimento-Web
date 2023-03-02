@@ -14,26 +14,34 @@
         </style>
     </head>
     <body>
-        <form action="#" method="post">
+        <form action="ServletMultiplo" method="post">
             <label>Escolha um ou mais lanches:</label><br>
             <% List<Lanche> lanches = (List<Lanche>) request.getAttribute("lanches"); %>
             <% for (Lanche lanche : lanches) { %>
                 <input type="checkbox" id="<%= lanche.getNomelanche() %>" name="lanches[]" value="<%= lanche.getValor() %>">
                 <label for="<%= lanche.getNomelanche() %>"><%= lanche.getNomelanche() %></label>
                 <input type="number" id="qtd_<%= lanche.getNomelanche() %>" name="qtd_lanches[]" min="1" max="10" value="1" class="hidden">
-                <label for="qtd_<%= lanche.getNomelanche() %>">R$ <%= lanche.getValor() %></label> <br>
+                <label for="qtd_<%= lanche.getNomelanche() %>">R$ <%= lanche.getValor() %></label> 
+                <!-- area de observaÃ§Ãµes textarea com maximo de 80 caracteres -->
+                <input class="hidden" type="text" name="observacoes" placeholder="Observacoes" maxlength="80">
+                <br>
             <% } %>
 
             <br>
             <div style='display: flex'>
                 <label>CPF:</label>
                 <input type="text" name="cpf" id="cpf" placeholder="Digite seu CPF" required><br>
+                
             </div>
-
+            <div style='display: flex'>
+                <label>Endereco:</label>
+                <input type="text" name="endereco" id="endereco" placeholder="Digite seu endereco completo" required><br>
+                
+            </div>
             <br>
             <div style='display: flex'>
                 <label>Valor total:&nbsp</label>
-                <span>R$&nbsp</span><span name='precototal' id='valor_total'>0.0</span>
+                <span>R$&nbsp</span><span id='precototal' name='precototal'>0.0</span>
             </div>  
         
             <input type="submit" value="registrar" name="botao">
@@ -42,13 +50,16 @@
         <script>
             const lanches = document.querySelectorAll('input[type="checkbox"]');
             const qtd_lanches = document.querySelectorAll('input[type="number"]');
+            const observacoes = document.querySelectorAll('input[type="text"]');
 
             lanches.forEach((lanche, index) => {
                 lanche.addEventListener('change', () => {
                     if (lanche.checked) {
                         qtd_lanches[index].classList.remove('hidden');
+                        observacoes[index].classList.remove('hidden');
                     } else {
                         qtd_lanches[index].classList.add('hidden');
+                        observacoes[index].classList.add('hidden');
                     }
                     atualizaValores();
                 });
@@ -68,7 +79,7 @@
                         valor_total += total;
                     }
                 });
-                document.getElementById('valor_total').innerHTML = valor_total.toFixed(1);
+                document.getElementById('precototal').innerHTML = valor_total.toFixed(1);
             }
 
             qtd_lanches.forEach((qtd_lanche) => {
