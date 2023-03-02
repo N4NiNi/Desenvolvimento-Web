@@ -18,9 +18,10 @@
             <label>Escolha um ou mais lanches:</label><br>
             <% List<Lanche> lanches = (List<Lanche>) request.getAttribute("lanches"); %>
             <% for (Lanche lanche : lanches) { %>
-                <input type="checkbox" id="<%= lanche.getNomelanche() %>" name="lanches[]" value="<%= lanche.getNomelanche() %>">
+                <input type="checkbox" id="<%= lanche.getNomelanche() %>" name="lanches[]" value="<%= lanche.getValor() %>">
                 <label for="<%= lanche.getNomelanche() %>"><%= lanche.getNomelanche() %></label>
-                <input type="number" id="qtd_<%= lanche.getNomelanche() %>" name="qtd_lanches[]" min="1" max="10" value="1" class="hidden"><br>
+                <input type="number" id="qtd_<%= lanche.getNomelanche() %>" name="qtd_lanches[]" min="1" max="10" value="1" class="hidden">
+                <label for="qtd_<%= lanche.getNomelanche() %>">R$ <%= lanche.getValor() %></label> <br>
             <% } %>
 
             <br>
@@ -45,6 +46,24 @@
                         qtd_lanches[index].classList.add('hidden');
                     }
                 });
+            });
+
+            const atualizaValores = () => {
+                lanches.forEach((lanche, index) => {
+                    if (lanche.checked) {
+                        const valor = parseFloat(lanche.value);
+                        const qtd = parseFloat(qtd_lanches[index].value);
+                        console.log(index, valor, qtd);
+                        const total = valor * qtd;
+                        console.log(total);
+                        console.log("R$ " + total);
+                        qtd_lanches[index].nextElementSibling.innerHTML = "R$ " + total.toFixed(1);
+                    }
+                });
+            }
+
+            qtd_lanches.forEach((qtd_lanche) => {
+                qtd_lanche.addEventListener('change', atualizaValores);
             });
         </script>
 </body>
