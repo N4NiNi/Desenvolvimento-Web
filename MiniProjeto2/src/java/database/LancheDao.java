@@ -50,7 +50,7 @@ public class LancheDao {
                 Lanche l=new Lanche();
                 lanche.add(l);
                 
-                l.setNomelanche("Nome_lanche");
+                l.setNomelanche(rs.getString("Nome_lanche"));
                 l.setValor(rs.getFloat("Valor"));
                 
             }

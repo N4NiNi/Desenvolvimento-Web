@@ -38,6 +38,7 @@ public class ServletMultiplo extends HttpServlet {
         try{
             if(operacao.equals("registrar")) registrar(request,response);
             else if(operacao.equals("consultar")) consultar (request, response);
+            else if(operacao.equals("consultarLanche")) consultarlanche (request, response);
             else response.sendRedirect("erro.jsp");
         }catch(SQLException e){
             response.sendRedirect("erro.jsp");
@@ -75,9 +76,9 @@ public class ServletMultiplo extends HttpServlet {
     }
     
     private void consultarlanche(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException{
-       List<Lanche> listLanche = lancheDao.selectAllLanche();
-        request.setAttribute("criapedidos", listLanche);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("criapedidos.jsp");
+        List<Lanche> listLanche = lancheDao.selectAllLanche();
+        request.setAttribute("lanches", listLanche);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("criarPedido.jsp");
         dispatcher.forward(request,response);
     }
 
