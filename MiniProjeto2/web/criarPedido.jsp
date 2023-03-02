@@ -31,6 +31,11 @@
             </div>
 
             <br>
+            <div style='display: flex'>
+                <label>Valor total:&nbsp</label>
+                <span>R$&nbsp</span><span name='precototal' id='valor_total'>0.0</span>
+            </div>  
+        
             <input type="submit" value="registrar" name="botao">
         </form>
 
@@ -45,10 +50,12 @@
                     } else {
                         qtd_lanches[index].classList.add('hidden');
                     }
+                    atualizaValores();
                 });
             });
 
             const atualizaValores = () => {
+                let valor_total = 0;
                 lanches.forEach((lanche, index) => {
                     if (lanche.checked) {
                         const valor = parseFloat(lanche.value);
@@ -58,13 +65,17 @@
                         console.log(total);
                         console.log("R$ " + total);
                         qtd_lanches[index].nextElementSibling.innerHTML = "R$ " + total.toFixed(1);
+                        valor_total += total;
                     }
                 });
+                document.getElementById('valor_total').innerHTML = valor_total.toFixed(1);
             }
 
             qtd_lanches.forEach((qtd_lanche) => {
                 qtd_lanche.addEventListener('change', atualizaValores);
             });
+
+            atualizaValores();
         </script>
 </body>
 </html>
