@@ -21,10 +21,10 @@
                 <input type="checkbox" id="<%= lanche.getNomelanche() %>" name="lanches[]" value="<%= lanche.getNomelanche() %>">
 
                 <label for="<%= lanche.getNomelanche() %>"><%= lanche.getNomelanche() %></label>
-                <input type="number" id="qtd_<%= lanche.getNomelanche() %>" name="qtd_lanches[]" min="1" max="10" value="1" class="hidden">
+                <input type="number" id="qtd_<%= lanche.getNomelanche() %>" name="qtd_lanches[]" min="0" value="0" class="hidden">
                 
                 <label for="qtd_<%= lanche.getNomelanche() %>">R$ <%= lanche.getValor() %></label>
-                <input class="hidden" type="text" name="observacoes" placeholder="Observacoes" maxlength="80">
+                <input class="hidden" type="text" name="observacoes[]" placeholder="Observacoes" maxlength="80">
                 <br>
                 
                 <input type='hidden' id="<%= lanche.getNomelanche() %>" value=<%= lanche.getValor() %>>
@@ -58,12 +58,13 @@
             const precototal = document.querySelector('#precototal');
 
             lanches.forEach((lanche, index) => {
-                console.log(index);
                 lanche.addEventListener('change', () => {
                     if (lanche.checked) {
+                        qtd_lanches[index].value = 1;
                         qtd_lanches[index].classList.remove('hidden');
                         observacoes[index].classList.remove('hidden');
                     } else {
+                        qtd_lanches[index].value = 0;
                         qtd_lanches[index].classList.add('hidden');
                         observacoes[index].classList.add('hidden');
                     }
@@ -77,10 +78,7 @@
                     if (lanche.checked) {
                         const valor = parseFloat(valores[index].value);
                         const qtd = parseFloat(qtd_lanches[index].value);
-                        console.log(index, valor, qtd);
                         const total = valor * qtd;
-                        console.log(total);
-                        console.log("R$ " + total);
                         qtd_lanches[index].nextElementSibling.innerHTML = "R$ " + total.toFixed(1);
                         valor_total += total;
                     }
