@@ -47,12 +47,53 @@ public class ServletMultiplo extends HttpServlet {
     }
     
     private void registrar (HttpServletRequest request, HttpServletResponse response){
-        String nomeLanche = request.getParameter("lanches[]");
-        System.out.println("flamengo");
-        System.out.println(nomeLanche);
+        String[] nomeLanches = request.getParameterValues("lanches[]");
+        if (nomeLanches != null) {
+            for (int i = 0; i < nomeLanches.length; i++) {
+                System.out.println("Valor " + (i+1) + ": " + nomeLanches[i]);
+            }
+        }
+        
+        String[] qtd_lanches = request.getParameterValues("qtd_lanches[]");
+        int[] qtd = new int[nomeLanches.length];
+        int cont = 0;
+        if (qtd_lanches != null) {
+            for (int i = 0; i < qtd_lanches.length; i++) {
+                if(!qtd_lanches[i].equals("0")){
+                    qtd[cont] = Integer.parseInt(qtd_lanches[i]);
+                    cont ++;
+                }
+            }
+        }
+        for (int i = 0; i < qtd.length; i++) {
+            System.out.println("Valor " + (i+1) + ": " + qtd[i]);
+        }
+      
+        String[] observacoes = request.getParameterValues("observacoes[]");
+        String[] obs = new String[nomeLanches.length];
+        cont = 0;
+        if (observacoes != null) {
+            for (int i = 0; i < observacoes.length; i++) {
+                if(!observacoes[i].equals("/*")){
+                    obs[cont] = observacoes[i];
+                    cont++;
+                }
+             }
+        }
+        for (int i = 0; i < obs.length; i++) {
+            System.out.println("Valor " + (i+1) + ": " + obs[i]);
+        }
+        
         String cpfCliente = request.getParameter("cpf");
+        System.out.println(cpfCliente);
+        
         float precoTotal = Float.parseFloat(request.getParameter("precototal"));
+        System.out.println(precoTotal);
+        
         String endereco = request.getParameter("endereco");
+        System.out.println(endereco);
+        
+        
         Pedido ped = new Pedido();
         Lanche lanche = new Lanche(); 
         
@@ -64,7 +105,7 @@ public class ServletMultiplo extends HttpServlet {
         
         try{
             criaDao.Criapedido(ped);
-            response.sendRedirect("criapedido.jsp");
+            response.sendRedirect("criarPedido.jsp");
             
         }catch (Exception e){
             e.printStackTrace();

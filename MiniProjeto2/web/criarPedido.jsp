@@ -24,7 +24,7 @@
                 <input type="number" id="qtd_<%= lanche.getNomelanche() %>" name="qtd_lanches[]" min="0" value="0" class="hidden">
                 
                 <label for="qtd_<%= lanche.getNomelanche() %>">R$ <%= lanche.getValor() %></label>
-                <input class="hidden" type="text" name="observacoes[]" placeholder="Observacoes" maxlength="80">
+                <input class="hidden" type="text" name="observacoes[]" placeholder="Observacoes" maxlength="80" value='/*'>
                 <br>
                 
                 <input type='hidden' id="<%= lanche.getNomelanche() %>" value=<%= lanche.getValor() %>>
@@ -60,10 +60,12 @@
             lanches.forEach((lanche, index) => {
                 lanche.addEventListener('change', () => {
                     if (lanche.checked) {
+                        observacoes[index].value = "";
                         qtd_lanches[index].value = 1;
                         qtd_lanches[index].classList.remove('hidden');
                         observacoes[index].classList.remove('hidden');
                     } else {
+                        observacoes[index].value = "/*";
                         qtd_lanches[index].value = 0;
                         qtd_lanches[index].classList.add('hidden');
                         observacoes[index].classList.add('hidden');
