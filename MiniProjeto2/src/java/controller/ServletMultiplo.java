@@ -99,9 +99,7 @@ public class ServletMultiplo extends HttpServlet {
         
         ped.setCpfcliente(cpfCliente);
         ped.setValor_Total(precoTotal);
-        ped.setEndereco(endereco);
-        //lanche.setNomelanche(nomeLanche);
-       
+        ped.setEndereco(endereco);       
         
         try{
             criaDao.Criapedido(ped);

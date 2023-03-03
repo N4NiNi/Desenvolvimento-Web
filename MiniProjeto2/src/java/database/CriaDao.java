@@ -29,7 +29,7 @@ public class CriaDao {
             PreparedStatement preparedStatement = conn.prepareStatement(INSERT_PEDIDOS_SQL);
             preparedStatement.setFloat(1, pedido.getValor_Total());
             preparedStatement.setString(2, pedido.getCpfcliente());
-            preparedStatement.setString(4, pedido.getEndereco());
+            preparedStatement.setString(3, pedido.getEndereco());
             
             
             result = preparedStatement.executeUpdate();
