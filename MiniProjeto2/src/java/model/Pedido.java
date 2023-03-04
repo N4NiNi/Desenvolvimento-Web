@@ -42,7 +42,6 @@ public class Pedido {
         this.date = date;
     }
 
-
     public String getCpfcliente() {
         return cpfcliente;
     }
@@ -50,8 +49,6 @@ public class Pedido {
     public void setCpfcliente(String cpfcliente) {
         this.cpfcliente = cpfcliente;
     }
-    
-    
 
     public int getId_pedido() {
         return id_pedido;

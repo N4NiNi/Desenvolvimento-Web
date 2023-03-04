@@ -35,6 +35,7 @@ public class ServletMultiplo extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException{
         String operacao = request.getParameter("botao");
+        System.out.println(operacao);
         
         try{
             if(operacao.equals("registrar")) registrar(request,response);

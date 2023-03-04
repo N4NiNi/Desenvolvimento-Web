@@ -1,17 +1,36 @@
-<%-- 
-    Document   : listarPedidos
-    Created on : 2 de mar. de 2023, 10:31:22
-    Author     : Vinicius
---%>
-
+<%@page import="java.util.List"%>
+<%@page import="model.Pedido"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+        <script src='ajaxhandler.js'></script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Listar pedidos</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <% List<Pedido> pedidos = (List<Pedido>) request.getAttribute("listaPedidos"); %>
+        <table id="tabela_pedidos" border="1">
+            <thead>
+                <tr>
+                    <th width="50">ID</th>
+                    <th width="150">CPF</th>
+                    <th width="150">Valor total</th>
+                    <th width="150">Data</th>
+                </tr>
+            </thead>
+            
+            <% for (Pedido pedido : pedidos) { %>
+                <tr id='item'>
+                    <td> <%=pedido.getId_pedido()%></td>
+                    <td> <%=pedido.getCpfcliente()%></td>
+                    <td> <%=pedido.getValor_Total()%></td>
+                    <td> <%=pedido.getDate()%></td>
+                    <td><a href="detalhesPedido?id=<%=pedido.getId_pedido()%>">Detalhes</a></td>
+                </tr>
+
+            <% } %>
+        </table>
     </body>
 </html>
