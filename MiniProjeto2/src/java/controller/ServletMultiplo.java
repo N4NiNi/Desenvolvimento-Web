@@ -14,18 +14,18 @@ import model.Lanche;
 import model.LanchePedido;
 
 import database.VisualizaDao;
-import database.CriaDao;
+import database.InsereDao;
 import database.LancheDao;
 
 public class ServletMultiplo extends HttpServlet {
     private VisualizaDao pedidoDao;
-    private CriaDao criaDao;
+    private InsereDao insereDao;
     private LancheDao lancheDao;
     
     public void init(){
         lancheDao = new LancheDao();
         pedidoDao = new VisualizaDao();
-        criaDao = new CriaDao();
+        insereDao = new InsereDao();
     }
     
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -39,7 +39,7 @@ public class ServletMultiplo extends HttpServlet {
             else if(operacao.equals("registrarLanche")) registrarlanche(request, response);
             else if(operacao.equals("detalhesPedido")) detalhesPedido(request, response);
         }catch(SQLException e){
-            response.sendRedirect("erro.jsp");
+            System.out.println(e);
         }
     }
     
@@ -80,7 +80,7 @@ public class ServletMultiplo extends HttpServlet {
         ped.setEndereco(endereco);       
         
         try{
-            int idpedido = criaDao.inserePedido(ped);
+            int idpedido = insereDao.inserePedido(ped);
             
             for (int i = 0; i < nomeLanches.length; i++) {
                 LanchePedido lancheped = new LanchePedido();
@@ -89,7 +89,7 @@ public class ServletMultiplo extends HttpServlet {
                 lancheped.setObservacao(obs[i]);
                 lancheped.setQuantidade(qtd[i]);
                 
-                criaDao.insereLanchePedido(lancheped);
+                insereDao.insereLanchePedido(lancheped);
             }
             response.sendRedirect("sucesso.html");
         }catch (Exception e){

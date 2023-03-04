@@ -1,9 +1,9 @@
 $(document).ready(function() {
     setInterval(function() {
         $.ajax({
-            url: 'ServletMultiplo', // Substitua pelo endereço do arquivo que atualiza a lista de pedidos
-            type: 'POST',
-            data: { botao: 'consultar' },
+            url: 'ServletMultiplo',
+            type: 'post',
+            data: { "botao": 'consultarPedidos' },
             success: function(response) {
                 $('body').html(response);
             },
@@ -11,5 +11,5 @@ $(document).ready(function() {
                 console.log('Erro ao atualizar a lista de pedidos:', error);
             }
         });
-    }, 5000); // Intervalo de atualização em milissegundos (5 segundos neste exemplo)
+    }, 5000);
 });

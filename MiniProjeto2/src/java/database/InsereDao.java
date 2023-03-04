@@ -9,7 +9,7 @@ import java.sql.Statement;
 import model.Pedido;
 import model.LanchePedido;
 
-public class CriaDao {
+public class InsereDao {
     String INSERT_PEDIDOS_SQL = "INSERT INTO pedido" + " (Valor_Total, Cliente_CPF, endereco) VALUES " + " (?, ?, ?);";
     String INSERT_LPEDIDOS_SQL = "INSERT INTO lanchepedido" + " (Nome_lanche, Id_pedido, observacao, quantidade) VALUES " + " (?, ?, ?, ?);";
 
