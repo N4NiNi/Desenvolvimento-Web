@@ -22,14 +22,20 @@
             </thead>
             
             <% for (Pedido pedido : pedidos) { %>
-                <tr id='item'>
+                <tr>
                     <td> <%=pedido.getId_pedido()%></td>
                     <td> <%=pedido.getCpfcliente()%></td>
                     <td> <%=pedido.getValor_Total()%></td>
                     <td> <%=pedido.getDate()%></td>
-                    <td><a href="detalhesPedido?id=<%=pedido.getId_pedido()%>">Detalhes</a></td>
+                    <td>
+                        <form action="ServletMultiplo" method="POST">
+                            <input type="hidden" name="id_pedido" value="<%=pedido.getId_pedido()%>">
+                            <button type="submit" name="botao" value="detalhesPedido">
+                                Detalhes
+                            </button>
+                        </form>
+                    </td>
                 </tr>
-
             <% } %>
         </table>
     </body>

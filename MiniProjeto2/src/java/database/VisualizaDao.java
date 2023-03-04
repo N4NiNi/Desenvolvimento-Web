@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Pedido;
+import model.LanchePedido;
 
 /**
  *
@@ -23,13 +24,14 @@ public class VisualizaDao {
     private String user="root", senha="";
     
     private String SELECT_ALL_Pedidos = "select * from pedido;";
+    private String SELECT_Lanche_Pedido_ID = "select * from lanchepedido where Id_pedido = ?;";
+    private String SELECT_Pedido = "select * from pedido where Id_pedido = ?;";
+
     protected Connection getConnection(){
         Connection conn = null;
         try{
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(connection,user,senha);
-            
-            
         }catch(SQLException e){
             e.printStackTrace();
         }catch(ClassNotFoundException e){
@@ -63,6 +65,56 @@ public class VisualizaDao {
             
         }
             return pedido;
+    }
+
+    public List<LanchePedido> selectLanchePedido(int id_pedido) throws SQLException{
+        List<LanchePedido> lanchePedido = new ArrayList<>();
+        try{
+            Connection conn = getConnection();
+            
+            PreparedStatement preparedStatement = conn.prepareStatement(SELECT_Lanche_Pedido_ID);
+            preparedStatement.setInt(1, id_pedido);
+    
+            ResultSet rs = preparedStatement.executeQuery();
+            
+            while(rs.next()){
+                LanchePedido lp=new LanchePedido();
+                lp.setIdpedido(rs.getInt("Id_pedido"));
+                lp.setNomelanche(rs.getString("Nome_lanche"));
+                lp.setObservacao(rs.getString("Observacao"));
+                lp.setQuantidade(rs.getInt("Quantidade"));
+                lanchePedido.add(lp);
+            }
+        }catch(SQLException e){
+        
+            printSQLException(e);
+            
+        }
+        return lanchePedido;
+    }
+
+    //selectPedido  
+    public Pedido selectPedido(int id_pedido) throws SQLException{
+        Pedido pedido = new Pedido();
+        try{
+            Connection conn = getConnection();
+            
+            PreparedStatement preparedStatement = conn.prepareStatement(SELECT_Pedido);
+            preparedStatement.setInt(1, id_pedido);
+    
+            ResultSet rs = preparedStatement.executeQuery();
+            
+            while(rs.next()){
+                pedido.setId_pedido(rs.getInt("Id_pedido"));
+                pedido.setValor_Total(rs.getFloat("Valor_Total"));
+                pedido.setCpfcliente(rs.getString("cliente_CPF"));
+                pedido.setDate(rs.getDate("Data_pedido"));
+            }
+        }catch(SQLException e){
+            printSQLException(e);
+            
+        }
+        return pedido;
     }
     
     private void printSQLException(SQLException ex){
