@@ -47,7 +47,7 @@
                 <span>R$&nbsp</span><input name="precototal" id="precototal" value="0.0" readonly>
             </div>  
        
-            <input type="submit" value="registrar" name="botao">
+            <input type="submit" value="registrarPedido" name="botao">
         </form>
 
         <script>

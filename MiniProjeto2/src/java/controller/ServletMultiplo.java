@@ -1,7 +1,5 @@
 package controller;
 
-
-
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -14,13 +12,12 @@ import jakarta.servlet.RequestDispatcher;
 import model.Pedido;
 import model.Lanche;
 import model.LanchePedido;
-//
+
 import database.VisualizaDao;
 import database.CriaDao;
 import database.LancheDao;
 
 public class ServletMultiplo extends HttpServlet {
-
     private VisualizaDao pedidoDao;
     private CriaDao criaDao;
     private LancheDao lancheDao;
@@ -29,7 +26,6 @@ public class ServletMultiplo extends HttpServlet {
         lancheDao = new LancheDao();
         pedidoDao = new VisualizaDao();
         criaDao = new CriaDao();
-        
     }
     
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -38,8 +34,8 @@ public class ServletMultiplo extends HttpServlet {
         System.out.println(operacao);
         
         try{
-            if(operacao.equals("registrar")) registrar(request,response);
-            else if(operacao.equals("consultar")) consultar (request, response);
+            if(operacao.equals("registrarPedido")) registrarPedido(request,response);
+            else if(operacao.equals("consultarPedidos")) consultarPedidos (request, response);
             else if(operacao.equals("registrarLanche")) registrarlanche(request, response);
             else if(operacao.equals("detalhesPedido")) detalhesPedido(request, response);
         }catch(SQLException e){
@@ -47,14 +43,8 @@ public class ServletMultiplo extends HttpServlet {
         }
     }
     
-    private void registrar (HttpServletRequest request, HttpServletResponse response){
+    private void registrarPedido (HttpServletRequest request, HttpServletResponse response){
         String[] nomeLanches = request.getParameterValues("lanches[]");
-        int idpedido;
-        if (nomeLanches != null) {
-            for (int i = 0; i < nomeLanches.length; i++) {
-                System.out.println("Valor " + (i+1) + ": " + nomeLanches[i]);
-            }
-        }
         
         String[] qtd_lanches = request.getParameterValues("qtd_lanches[]");
         int[] qtd = new int[nomeLanches.length];
@@ -66,9 +56,6 @@ public class ServletMultiplo extends HttpServlet {
                     cont ++;
                 }
             }
-        }
-        for (int i = 0; i < qtd.length; i++) {
-            System.out.println("Valor " + (i+1) + ": " + qtd[i]);
         }
       
         String[] observacoes = request.getParameterValues("observacoes[]");
@@ -82,30 +69,18 @@ public class ServletMultiplo extends HttpServlet {
                 }
              }
         }
-        for (int i = 0; i < obs.length; i++) {
-            System.out.println("Valor " + (i+1) + ": " + obs[i]);
-        }
         
         String cpfCliente = request.getParameter("cpf");
-        System.out.println(cpfCliente);
-        
-        float precoTotal = Float.parseFloat(request.getParameter("precototal"));
-        System.out.println(precoTotal);
-        
         String endereco = request.getParameter("endereco");
-        System.out.println(endereco);
-        
+        float precoTotal = Float.parseFloat(request.getParameter("precototal"));
         
         Pedido ped = new Pedido();
-        Lanche lanche = new Lanche(); 
-        
-        
         ped.setCpfcliente(cpfCliente);
         ped.setValor_Total(precoTotal);
         ped.setEndereco(endereco);       
         
         try{
-            idpedido = criaDao.Criapedido(ped);
+            int idpedido = criaDao.inserePedido(ped);
             
             for (int i = 0; i < nomeLanches.length; i++) {
                 LanchePedido lancheped = new LanchePedido();
@@ -114,21 +89,18 @@ public class ServletMultiplo extends HttpServlet {
                 lancheped.setObservacao(obs[i]);
                 lancheped.setQuantidade(qtd[i]);
                 
-                criaDao.CriaLanchePedido(lancheped);
-                
+                criaDao.insereLanchePedido(lancheped);
             }
-            
             response.sendRedirect("sucesso.html");
-            
         }catch (Exception e){
             e.printStackTrace();
         }
-        
     }
     
-    private void consultar(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException{
+    private void consultarPedidos(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException{
         List<Pedido> listPedido = pedidoDao.selectAllPedidos();
         request.setAttribute("listaPedidos", listPedido);
+       
         RequestDispatcher dispatcher = request.getRequestDispatcher("listarPedidos.jsp");
         dispatcher.forward(request,response);
     }
@@ -136,16 +108,20 @@ public class ServletMultiplo extends HttpServlet {
     private void registrarlanche(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException{
         List<Lanche> listLanche = lancheDao.selectAllLanche();
         request.setAttribute("lanches", listLanche);
+        
         RequestDispatcher dispatcher = request.getRequestDispatcher("criarPedido.jsp");
         dispatcher.forward(request,response);
     }
 
     private void detalhesPedido(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException{
         int idpedido = Integer.parseInt(request.getParameter("id_pedido"));
+        
         List<LanchePedido> listLanchePedido = pedidoDao.selectLanchePedido(idpedido);
         request.setAttribute("lanches", listLanchePedido);
+        
         Pedido pedido = pedidoDao.selectPedido(idpedido);
         request.setAttribute("pedido", pedido);
+        
         RequestDispatcher dispatcher = request.getRequestDispatcher("detalhesPedido.jsp");
         dispatcher.forward(request,response);
     }

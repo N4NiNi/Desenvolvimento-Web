@@ -1,13 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package database;
 
-/**
- *
- * @author Vinicius
- */
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -18,9 +10,10 @@ import model.Pedido;
 import model.LanchePedido;
 
 public class CriaDao {
-    public int Criapedido(Pedido pedido) throws ClassNotFoundException{
-        String INSERT_PEDIDOS_SQL = "INSERT INTO pedido" + " (Valor_Total, Cliente_CPF, endereco) VALUES " + " (?, ?, ?);";
-        int idPedido = 0;
+    String INSERT_PEDIDOS_SQL = "INSERT INTO pedido" + " (Valor_Total, Cliente_CPF, endereco) VALUES " + " (?, ?, ?);";
+    String INSERT_LPEDIDOS_SQL = "INSERT INTO lanchepedido" + " (Nome_lanche, Id_pedido, observacao, quantidade) VALUES " + " (?, ?, ?, ?);";
+
+    public int inserePedido(Pedido pedido) throws ClassNotFoundException{
         try{
             Class.forName("com.mysql.jdbc.Driver");
             
@@ -33,24 +26,22 @@ public class CriaDao {
             preparedStatement.setString(2, pedido.getCpfcliente());
             preparedStatement.setString(3, pedido.getEndereco());
             
-
             preparedStatement.executeUpdate();
+
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+            int idPedido = 0;
             if (generatedKeys.next()) {
                 idPedido = generatedKeys.getInt(1);
                 System.out.println(idPedido);
             }
-            
-            
-            
+            return idPedido;
         }catch (SQLException e){
             printSQLException(e);
+            return -1;
         }
-        return idPedido;
     }
-    public int CriaLanchePedido(LanchePedido lancheped) throws ClassNotFoundException{
-        String INSERT_LPEDIDOS_SQL = "INSERT INTO lanchepedido" + " (Nome_lanche, Id_pedido, observacao, quantidade) VALUES " + " (?, ?, ?, ?);";
-        int result = 0;
+
+    public int insereLanchePedido(LanchePedido lancheped) throws ClassNotFoundException{
         try{
             Class.forName("com.mysql.jdbc.Driver");
             
@@ -64,30 +55,26 @@ public class CriaDao {
             preparedStatement.setString(3, lancheped.getObservacao());
             preparedStatement.setInt(4, lancheped.getQuantidade());
 
-            result = preparedStatement.executeUpdate();
+            int result = preparedStatement.executeUpdate();
+            return result;
         }catch (SQLException e){
             printSQLException(e);
+            return -1;
         }
-        return result;
     }
    
-    
-    
-    
     private void printSQLException(SQLException ex){
-        for(Throwable e: ex){
-               if(e instanceof SQLException){
-                   e.printStackTrace(System.err);
-                   System.err.println("SQLState" + ((SQLException)e).getSQLState());
-                   System.err.println("Error Code: " + ((SQLException) e).getErrorCode());
-                   System.err.println("Message: " + e.getMessage());
-                   Throwable t = ex.getCause();
-                   while(t != null){
-                       System.out.println("Cause: " + t);
-                       t = t.getCause();
-                   }
-               }
-        }
+        for(Throwable e: ex)
+            if(e instanceof SQLException){
+                e.printStackTrace(System.err);
+                System.err.println("SQLState" + ((SQLException)e).getSQLState());
+                System.err.println("Error Code: " + ((SQLException) e).getErrorCode());
+                System.err.println("Message: " + e.getMessage());
+                Throwable t = ex.getCause();
+                while(t != null){
+                    System.out.println("Cause: " + t);
+                    t = t.getCause();
+                }
+            }
     }
-    
 }
