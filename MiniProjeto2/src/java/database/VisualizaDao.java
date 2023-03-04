@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package database;
 
 import java.sql.Connection;
@@ -14,18 +10,16 @@ import java.util.List;
 
 import model.Pedido;
 import model.LanchePedido;
+import model.Lanche;
 
-/**
- *
- * @author Vinicius
- */
 public class VisualizaDao {
     private String connection = "jdbc:mysql://localhost/dev_lanche";
     private String user="root", senha="";
     
-    private String SELECT_ALL_Pedidos = "select * from pedido;";
-    private String SELECT_Lanche_Pedido_ID = "select * from lanchepedido where Id_pedido = ?;";
-    private String SELECT_Pedido = "select * from pedido where Id_pedido = ?;";
+    private String SELECT_ALL_Pedidos_SQL = "select * from pedido;";
+    private String SELECT_Lanche_Pedido_ID_SQL = "select * from lanchepedido where Id_pedido = ?;";
+    private String SELECT_Pedido_SQL = "select * from pedido where Id_pedido = ?;";
+    private String SELECT_ALL_lanche_SQL = "select * from lanche;";
 
     protected Connection getConnection(){
         Connection conn = null;
@@ -38,7 +32,6 @@ public class VisualizaDao {
             e.printStackTrace();
         }
         return conn;
-        
     }
     
     public List<Pedido> selectAllPedidos() throws SQLException{
@@ -46,7 +39,7 @@ public class VisualizaDao {
         try{
             Connection conn = getConnection();
             
-            PreparedStatement preparedStatement = conn.prepareStatement(SELECT_ALL_Pedidos);
+            PreparedStatement preparedStatement = conn.prepareStatement(SELECT_ALL_Pedidos_SQL);
             
             ResultSet rs = preparedStatement.executeQuery();
             
@@ -72,7 +65,7 @@ public class VisualizaDao {
         try{
             Connection conn = getConnection();
             
-            PreparedStatement preparedStatement = conn.prepareStatement(SELECT_Lanche_Pedido_ID);
+            PreparedStatement preparedStatement = conn.prepareStatement(SELECT_Lanche_Pedido_ID_SQL);
             preparedStatement.setInt(1, id_pedido);
     
             ResultSet rs = preparedStatement.executeQuery();
@@ -93,13 +86,12 @@ public class VisualizaDao {
         return lanchePedido;
     }
 
-    //selectPedido  
     public Pedido selectPedido(int id_pedido) throws SQLException{
         Pedido pedido = new Pedido();
         try{
             Connection conn = getConnection();
             
-            PreparedStatement preparedStatement = conn.prepareStatement(SELECT_Pedido);
+            PreparedStatement preparedStatement = conn.prepareStatement(SELECT_Pedido_SQL);
             preparedStatement.setInt(1, id_pedido);
     
             ResultSet rs = preparedStatement.executeQuery();
@@ -116,6 +108,31 @@ public class VisualizaDao {
             
         }
         return pedido;
+    }
+
+    public List<Lanche> selectAllLanche() throws SQLException{
+        List<Lanche> lanche = new ArrayList<>();
+        try{
+            Connection conn = getConnection();
+            
+            PreparedStatement preparedStatement = conn.prepareStatement(SELECT_ALL_lanche_SQL);
+            
+            ResultSet rs = preparedStatement.executeQuery();
+            
+            while(rs.next()){
+                Lanche l=new Lanche();
+                lanche.add(l);
+                
+                l.setNomelanche(rs.getString("Nome_lanche"));
+                l.setValor(rs.getFloat("Valor"));
+                
+            }
+        }catch(SQLException e){
+            
+            printSQLException(e);
+            
+        }
+            return lanche;
     }
     
     private void printSQLException(SQLException ex){

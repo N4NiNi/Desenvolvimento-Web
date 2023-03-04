@@ -10,17 +10,29 @@ import model.Pedido;
 import model.LanchePedido;
 
 public class InsereDao {
-    String INSERT_PEDIDOS_SQL = "INSERT INTO pedido" + " (Valor_Total, Cliente_CPF, endereco) VALUES " + " (?, ?, ?);";
-    String INSERT_LPEDIDOS_SQL = "INSERT INTO lanchepedido" + " (Nome_lanche, Id_pedido, observacao, quantidade) VALUES " + " (?, ?, ?, ?);";
+    private String connection = "jdbc:mysql://localhost/dev_lanche";
+    private String user="root", senha="";
+    
+    private String INSERT_PEDIDOS_SQL = "INSERT INTO pedido" + " (Valor_Total, Cliente_CPF, endereco) VALUES " + " (?, ?, ?);";
+    private String INSERT_LPEDIDOS_SQL = "INSERT INTO lanchepedido" + " (Nome_lanche, Id_pedido, observacao, quantidade) VALUES " + " (?, ?, ?, ?);";
+
+    protected Connection getConnection(){
+        Connection conn = null;
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(connection,user,senha);
+        }catch(SQLException e){
+            e.printStackTrace();
+        }catch(ClassNotFoundException e){
+            e.printStackTrace();
+        }
+        return conn;
+    }
+    
 
     public int inserePedido(Pedido pedido) throws ClassNotFoundException{
         try{
-            Class.forName("com.mysql.jdbc.Driver");
-            
-            String connection = "jdbc:mysql://localhost/dev_lanche";
-            String user="root", senha="";
-            
-            Connection conn = DriverManager.getConnection(connection, user, senha);
+            Connection conn = getConnection();
             PreparedStatement preparedStatement = conn.prepareStatement(INSERT_PEDIDOS_SQL, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setFloat(1, pedido.getValor_Total());
             preparedStatement.setString(2, pedido.getCpfcliente());
@@ -43,12 +55,7 @@ public class InsereDao {
 
     public int insereLanchePedido(LanchePedido lancheped) throws ClassNotFoundException{
         try{
-            Class.forName("com.mysql.jdbc.Driver");
-            
-            String connection = "jdbc:mysql://localhost/dev_lanche";
-            String user="root", senha="";
-            
-            Connection conn = DriverManager.getConnection(connection, user, senha);
+            Connection conn = getConnection();           
             PreparedStatement preparedStatement = conn.prepareStatement(INSERT_LPEDIDOS_SQL, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, lancheped.getNomelanche());
             preparedStatement.setInt(2, lancheped.getIdpedido());

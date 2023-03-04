@@ -15,16 +15,13 @@ import model.LanchePedido;
 
 import database.VisualizaDao;
 import database.InsereDao;
-import database.LancheDao;
 
 public class ServletMultiplo extends HttpServlet {
-    private VisualizaDao pedidoDao;
+    private VisualizaDao visualizaDao;
     private InsereDao insereDao;
-    private LancheDao lancheDao;
     
     public void init(){
-        lancheDao = new LancheDao();
-        pedidoDao = new VisualizaDao();
+        visualizaDao = new VisualizaDao();
         insereDao = new InsereDao();
     }
     
@@ -98,7 +95,7 @@ public class ServletMultiplo extends HttpServlet {
     }
     
     private void consultarPedidos(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException{
-        List<Pedido> listPedido = pedidoDao.selectAllPedidos();
+        List<Pedido> listPedido = visualizaDao.selectAllPedidos();
         request.setAttribute("listaPedidos", listPedido);
        
         RequestDispatcher dispatcher = request.getRequestDispatcher("listarPedidos.jsp");
@@ -106,7 +103,7 @@ public class ServletMultiplo extends HttpServlet {
     }
     
     private void registrarlanche(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException{
-        List<Lanche> listLanche = lancheDao.selectAllLanche();
+        List<Lanche> listLanche = visualizaDao.selectAllLanche();
         request.setAttribute("lanches", listLanche);
         
         RequestDispatcher dispatcher = request.getRequestDispatcher("criarPedido.jsp");
@@ -116,10 +113,10 @@ public class ServletMultiplo extends HttpServlet {
     private void detalhesPedido(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException{
         int idpedido = Integer.parseInt(request.getParameter("id_pedido"));
         
-        List<LanchePedido> listLanchePedido = pedidoDao.selectLanchePedido(idpedido);
+        List<LanchePedido> listLanchePedido = visualizaDao.selectLanchePedido(idpedido);
         request.setAttribute("lanches", listLanchePedido);
         
-        Pedido pedido = pedidoDao.selectPedido(idpedido);
+        Pedido pedido = visualizaDao.selectPedido(idpedido);
         request.setAttribute("pedido", pedido);
         
         RequestDispatcher dispatcher = request.getRequestDispatcher("detalhesPedido.jsp");
