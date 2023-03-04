@@ -22,7 +22,7 @@
                 <tr>
                     <th width="50">ID</th>
                     <th width="150">CPF</th>
-                    <th width="150">Valor total</th>
+                    <th width="150">Endereço</th>
                     <th width="150">Data</th>
                 </tr>
             </thead>
@@ -30,26 +30,37 @@
             <tr>
                 <td> <%=pedido.getId_pedido()%></td>
                 <td> <%=pedido.getCpfcliente()%></td>
-                <td> <%=pedido.getValor_Total()%></td>
+                <td> <%=pedido.getEndereco()%></td>
                 <td> <%=pedido.getDate()%></td>
             </tr>
         </table>
-
-        <% for (LanchePedido lanche : lanches) { %>
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th width="50">Lanche</th>
-                        <th width="150">Quantidade</th>
-                        <th width="150">Observação</th>
-                    </tr>
-                </thead>
+        <br>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th width="150">Lanche</th>
+                    <th width="150">Quantidade</th>
+                    <th width="150">Observação</th>
+                </tr>
+            </thead>
+            <% for (LanchePedido lanche : lanches) { %>
                 <tr>
                     <td> <%=lanche.getNomelanche()%></td>
                     <td> <%=lanche.getQuantidade()%></td>
                     <td> <%=lanche.getObservacao()%></td>
                 </tr>
-            </table>
-        <% } %>
+            <% } %>
+        </table>
+        <br>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th width="150">Valor total</th>
+                </tr>
+            </thead>
+            <tr>
+                <td> <%=pedido.getValor_Total()%></td>
+            </tr>
+        </table>
     </body>
 </html>

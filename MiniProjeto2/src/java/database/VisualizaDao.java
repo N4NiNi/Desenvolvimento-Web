@@ -109,6 +109,7 @@ public class VisualizaDao {
                 pedido.setValor_Total(rs.getFloat("Valor_Total"));
                 pedido.setCpfcliente(rs.getString("cliente_CPF"));
                 pedido.setDate(rs.getDate("Data_pedido"));
+                pedido.setEndereco(rs.getString("Endereco"));
             }
         }catch(SQLException e){
             printSQLException(e);
