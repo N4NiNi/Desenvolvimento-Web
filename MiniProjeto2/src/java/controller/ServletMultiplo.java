@@ -39,7 +39,7 @@ public class ServletMultiplo extends HttpServlet {
         try{
             if(operacao.equals("registrar")) registrar(request,response);
             else if(operacao.equals("consultar")) consultar (request, response);
-            else if(operacao.equals("consultarLanche")) consultarlanche (request, response);
+            else if(operacao.equals("registrarLanche")) registrarlanche(request, response);
             else response.sendRedirect("erro.jsp");
         }catch(SQLException e){
             response.sendRedirect("erro.jsp");
@@ -48,6 +48,7 @@ public class ServletMultiplo extends HttpServlet {
     
     private void registrar (HttpServletRequest request, HttpServletResponse response){
         String[] nomeLanches = request.getParameterValues("lanches[]");
+        int idpedido;
         if (nomeLanches != null) {
             for (int i = 0; i < nomeLanches.length; i++) {
                 System.out.println("Valor " + (i+1) + ": " + nomeLanches[i]);
@@ -97,13 +98,26 @@ public class ServletMultiplo extends HttpServlet {
         Pedido ped = new Pedido();
         Lanche lanche = new Lanche(); 
         
+        
         ped.setCpfcliente(cpfCliente);
         ped.setValor_Total(precoTotal);
         ped.setEndereco(endereco);       
         
         try{
-            criaDao.Criapedido(ped);
-            response.sendRedirect("criarPedido.jsp");
+            idpedido = criaDao.Criapedido(ped);
+            
+            for (int i = 0; i < nomeLanches.length; i++) {
+                LanchePedido lancheped = new LanchePedido();
+                lancheped.setIdpedido(idpedido);
+                lancheped.setNomelanche(nomeLanches[i]);
+                lancheped.setObservacao(obs[i]);
+                lancheped.setQuantidade(qtd[i]);
+                
+                criaDao.CriaLanchePedido(lancheped);
+                
+            }
+            
+            response.sendRedirect("sucesso.html");
             
         }catch (Exception e){
             e.printStackTrace();
@@ -118,7 +132,7 @@ public class ServletMultiplo extends HttpServlet {
         dispatcher.forward(request,response);
     }
     
-    private void consultarlanche(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException{
+    private void registrarlanche(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException{
         List<Lanche> listLanche = lancheDao.selectAllLanche();
         request.setAttribute("lanches", listLanche);
         RequestDispatcher dispatcher = request.getRequestDispatcher("criarPedido.jsp");
