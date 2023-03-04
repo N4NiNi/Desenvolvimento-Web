@@ -16,7 +16,6 @@ public class Pedido {
     private String cpfcliente;
     private String endereco;
     private Date date;
-    private int status;
 
     public String getEndereco() {
         return endereco;
@@ -25,15 +24,7 @@ public class Pedido {
     public void setEndereco(String endereco) {
         this.endereco = endereco;
     }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
+    
     public Date getDate() {
         return date;
     }

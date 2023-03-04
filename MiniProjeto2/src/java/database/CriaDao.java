@@ -19,9 +19,8 @@ import model.LanchePedido;
 
 public class CriaDao {
     public int Criapedido(Pedido pedido) throws ClassNotFoundException{
-        String INSERT_PEDIDOS_SQL = "INSERT INTO pedido" + " (Valor_Total, Cliente_CPF, status, endereco) VALUES " + " (?, ?, 0, ?);";
+        String INSERT_PEDIDOS_SQL = "INSERT INTO pedido" + " (Valor_Total, Cliente_CPF, endereco) VALUES " + " (?, ?, ?);";
         int idPedido = 0;
-        int result = 0;
         try{
             Class.forName("com.mysql.jdbc.Driver");
             
@@ -35,12 +34,11 @@ public class CriaDao {
             preparedStatement.setString(3, pedido.getEndereco());
             
 
-            result = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
                 idPedido = generatedKeys.getInt(1);
                 System.out.println(idPedido);
-                // faça o que precisar com o idPedido
             }
             
             

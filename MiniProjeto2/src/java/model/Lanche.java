@@ -27,7 +27,4 @@ public class Lanche {
     public void setValor(float valor) {
         this.valor = valor;
     }
-    
-    
-    
 }
