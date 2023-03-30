@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import model.Pedido;
 import model.LanchePedido;
+import model.Usuario;
 
 public class InsereDao {
     private String connection = "jdbc:mysql://localhost/dev_lanche";
@@ -15,6 +16,7 @@ public class InsereDao {
     
     private String INSERT_PEDIDOS_SQL = "INSERT INTO pedido" + " (Valor_Total, Cliente_CPF, endereco) VALUES " + " (?, ?, ?);";
     private String INSERT_LPEDIDOS_SQL = "INSERT INTO lanchepedido" + " (Nome_lanche, Id_pedido, observacao, quantidade) VALUES " + " (?, ?, ?, ?);";
+    private String INSERT_SESSION_SQL = "UPDATE INTO usuario set status = ? WHERE username = ?;";
 
     protected Connection getConnection(){
         Connection conn = null;
@@ -29,7 +31,7 @@ public class InsereDao {
         return conn;
     }
     
-
+    
     public int inserePedido(Pedido pedido) throws ClassNotFoundException{
         try{
             Connection conn = getConnection();
@@ -47,6 +49,22 @@ public class InsereDao {
                 System.out.println(idPedido);
             }
             return idPedido;
+        }catch (SQLException e){
+            printSQLException(e);
+            return -1;
+        }
+    }
+
+    public int updateSession(Usuario user) throws ClassNotFoundException{
+        try{
+            Connection conn = getConnection();
+            PreparedStatement preparedStatement = conn.prepareStatement(INSERT_SESSION_SQL, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, user.getSession());
+            preparedStatement.setString(2, user.getUsername());
+
+            int result = preparedStatement.executeUpdate();
+            System.out.println("TESTE");
+            return result;
         }catch (SQLException e){
             printSQLException(e);
             return -1;

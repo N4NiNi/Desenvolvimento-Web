@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Usuario;
+import database.InsereDao;
 
 /**
  * Servlet implementation class LoginServlet
@@ -26,8 +27,10 @@ public class LoginServletX extends HttpServlet {
 	private static final long serialVersionUID = 1L;
         
         private VisualizaDao visualizaDao;
-    
+        private InsereDao insereDao;
+        
         public void init(){
+            insereDao = new InsereDao();
             visualizaDao = new VisualizaDao();
         }
 
@@ -51,6 +54,9 @@ public class LoginServletX extends HttpServlet {
                     Cookie userName = new Cookie("user", user);
                     userName.setMaxAge(30*60);
                     response.addCookie(userName);
+                    String sessionID = session.getId();
+                    usr.setSession(sessionID);
+                    int r = insereDao.updateSession(usr);
                     response.sendRedirect("admin.jsp");
                 }else{
                     RequestDispatcher rd = getServletContext().getRequestDispatcher("/login.html");
@@ -59,6 +65,8 @@ public class LoginServletX extends HttpServlet {
                     rd.include(request, response);
                 }
             } catch (SQLException ex) {
+                Logger.getLogger(LoginServletX.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
                 Logger.getLogger(LoginServletX.class.getName()).log(Level.SEVERE, null, ex);
             }
 
