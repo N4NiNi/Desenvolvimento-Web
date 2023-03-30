@@ -11,6 +11,7 @@ import java.util.List;
 import model.Pedido;
 import model.LanchePedido;
 import model.Lanche;
+import model.Usuario;
 
 public class VisualizaDao {
     private String connection = "jdbc:mysql://localhost/dev_lanche";
@@ -20,6 +21,7 @@ public class VisualizaDao {
     private String SELECT_Lanche_Pedido_ID_SQL = "select * from lanchepedido where Id_pedido = ?;";
     private String SELECT_Pedido_SQL = "select * from pedido where Id_pedido = ?;";
     private String SELECT_ALL_lanche_SQL = "select * from lanche;";
+    private String SELECT_user_SQL = "select * from usuario where username like ? and senha like ?;";
 
     protected Connection getConnection(){
         Connection conn = null;
@@ -134,6 +136,31 @@ public class VisualizaDao {
         }
             return lanche;
     }
+
+    public Usuario selectuser(String username, String pass) throws SQLException{
+        Usuario user = new Usuario();
+        try{
+            Connection conn = getConnection();
+            
+            PreparedStatement preparedStatement = conn.prepareStatement(SELECT_user_SQL);
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, pass);
+    
+            ResultSet rs = preparedStatement.executeQuery();
+            rs.next();
+            
+            user.setNome(rs.getString("Nome"));
+            user.setUsername(rs.getString("username"));
+            user.setPass("senha");
+                //user.setSession(pass);
+        
+        }catch(SQLException e){
+            printSQLException(e);
+            
+        }
+        return user;
+    }
+    
     
     private void printSQLException(SQLException ex){
         for(Throwable e: ex){
