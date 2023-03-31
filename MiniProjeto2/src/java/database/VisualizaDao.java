@@ -22,6 +22,7 @@ public class VisualizaDao {
     private String SELECT_Pedido_SQL = "select * from pedido where Id_pedido = ?;";
     private String SELECT_ALL_lanche_SQL = "select * from lanche;";
     private String SELECT_user_SQL = "select * from usuario where username like ? and senha like ?;";
+    private String SELECT_session_SQL = "select sessao from usuario where username like ?;";
 
     protected Connection getConnection(){
         Connection conn = null;
@@ -159,6 +160,27 @@ public class VisualizaDao {
             
         }
         return user;
+    }
+    
+    public String selectsession(String username) throws SQLException{
+        Usuario user = new Usuario();
+        try{
+            Connection conn = getConnection();
+            
+            PreparedStatement preparedStatement = conn.prepareStatement(SELECT_session_SQL);
+            preparedStatement.setString(1, username);
+    
+            ResultSet rs = preparedStatement.executeQuery();
+            rs.next();
+            
+            return rs.getString("sessao");
+                //user.setSession(pass);
+        
+        }catch(SQLException e){
+            printSQLException(e);
+            
+        }
+        return null;
     }
     
     

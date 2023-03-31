@@ -16,7 +16,7 @@ public class InsereDao {
     
     private String INSERT_PEDIDOS_SQL = "INSERT INTO pedido" + " (Valor_Total, Cliente_CPF, endereco) VALUES " + " (?, ?, ?);";
     private String INSERT_LPEDIDOS_SQL = "INSERT INTO lanchepedido" + " (Nome_lanche, Id_pedido, observacao, quantidade) VALUES " + " (?, ?, ?, ?);";
-    private String INSERT_SESSION_SQL = "UPDATE INTO usuario set status = ? WHERE username = ?;";
+    private String INSERT_SESSION_SQL = "UPDATE usuario set sessao = ? WHERE username = ?;";
 
     protected Connection getConnection(){
         Connection conn = null;
