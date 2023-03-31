@@ -10,10 +10,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-/**
- * Servlet implementation class LogoutServlet
- */
-//@WebServlet("/LogoutServlet")
 public class LogoutServletX extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -30,12 +26,9 @@ public class LogoutServletX extends HttpServlet {
     	}
     	//invalidate the session if exists
     	HttpSession session = request.getSession(false);
-    	System.out.println("User="+session.getAttribute("user"));
     	if(session != null){
-    		session.invalidate();
-    	}else{
-           session.invalidate(); 
-        }
+            session.invalidate();
+    	}
     	response.sendRedirect("login.html");
     }
 

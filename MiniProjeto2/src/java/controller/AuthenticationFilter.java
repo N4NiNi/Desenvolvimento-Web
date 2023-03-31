@@ -53,8 +53,6 @@ public class AuthenticationFilter implements Filter {
                 String sec = (String) req.getSession().getAttribute("username");
 
                 sess = visualizaDao.selectsession(sec);
-                System.out.println("TESTE->>>");
-                System.out.println(sess);
                 sess_id = req.getSession().getId();
             }
             
@@ -63,12 +61,7 @@ public class AuthenticationFilter implements Filter {
                 this.context.log("Unauthorized access request");
                 res.sendRedirect("login.html");
             }else{
-                
                 chain.doFilter(request, response);
-                
-                //System.out.println(req.getSession().getAttribute("username"));
-                //System.out.println(req.getSession().getId());
-                
             }
         } catch (SQLException ex) {
             Logger.getLogger(AuthenticationFilter.class.getName()).log(Level.SEVERE, null, ex);

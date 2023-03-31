@@ -63,7 +63,6 @@ public class InsereDao {
             preparedStatement.setString(2, user.getUsername());
 
             int result = preparedStatement.executeUpdate();
-            System.out.println("TESTE");
             return result;
         }catch (SQLException e){
             printSQLException(e);

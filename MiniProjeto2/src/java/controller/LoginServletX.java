@@ -38,12 +38,8 @@ public class LoginServletX extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 
             try {
-                // get request parameters for userID and password
                 String user = request.getParameter("user");
                 String pwd = request.getParameter("pwd");
-    
-                
-                
                 Usuario usr = visualizaDao.selectuser(user, pwd);
          
                 if(usr.getNome() != null){

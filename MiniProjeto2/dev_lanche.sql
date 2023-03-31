@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 04-Mar-2023 às 16:20
+-- Tempo de geração: 31-Mar-2023 às 02:16
 -- Versão do servidor: 5.7.36
 -- versão do PHP: 7.4.26
 
@@ -122,6 +122,33 @@ INSERT INTO `pedido` (`Id_pedido`, `Valor_Total`, `Cliente_CPF`, `Data_pedido`, 
 (6, 54, '44236765222', '2023-03-04 13:17:32', 'Rua Holanda, 61'),
 (7, 10, '99878667634', '2023-03-04 13:18:50', 'Rua Alemanha, 71'),
 (8, 32, '42343156799', '2023-03-04 13:19:41', 'Rua Brasil, 203');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `usuario`
+--
+
+DROP TABLE IF EXISTS `usuario`;
+CREATE TABLE IF NOT EXISTS `usuario` (
+  `username` varchar(50) NOT NULL,
+  `nome` varchar(50) NOT NULL,
+  `senha` varchar(50) NOT NULL,
+  `sessao` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`username`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `usuario`
+--
+
+INSERT INTO `usuario` (`username`, `nome`, `senha`, `sessao`) VALUES
+('loliv', 'Lúcia Oliveira', '1234', '011FCAEB620A02D4ACB6828FA9D535E8'),
+('Fers', 'Fernando Souza', '2122', NULL),
+('Bsantos', 'Bianca Santos', '5532', NULL),
+('ricardao', 'Ricardo Silva', '0806', NULL),
+('CRodrigues', 'Camila Rodrigues', '7777', NULL),
+('Malemida', 'Marcelo Almeida', '9898', NULL);
 
 --
 -- Restrições para despejos de tabelas
